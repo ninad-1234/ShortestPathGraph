@@ -1,0 +1,323 @@
+<html>
+  <head>
+    <title>Algorithm Analysis</title>
+    <style>
+    .algoButton {
+        color: white;
+        background-color: black;
+        font-weight: bold;
+        padding: 1%;
+        margin-left: 10%;
+    }
+    
+    #showForm:hover, #showForm1:hover,#showForm2:hover {
+        background-color: #474747;
+    }
+
+    .formInput,.formInput1,.formInput2{
+        border: 1px solid black ;
+        margin: 5%;
+        padding: 2%;
+    }
+
+    .submitButton {
+        color: white;
+        background-color: black;
+        font-weight: bold;
+        padding: 1%;
+    }
+    
+    .submitButton:hover {
+        background-color: green;
+    }
+    
+    .graphs{
+        width: 95%;
+        margin-top: 1%;;
+        margin-bottom: 10%;
+    }
+
+    .subGraphDiv{
+        margin-top: 2%;
+    }
+    
+    .percentageAnalysis{
+        margin-top: -4%;
+    }
+    
+    tr, th{
+        border: 1px solid black;
+        padding: 3%;
+    }
+    
+    td {
+        border: 1px solid black;
+        padding: 3%;
+        width: 12vw;
+    }
+    
+    thead{
+        margin-top: 2%;
+    }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', {'packages':['bar']});
+        google.charts.setOnLoadCallback(drawScatter);
+        google.charts.setOnLoadCallback(curveLinesGraph);
+        google.charts.setOnLoadCallback(selfTimeGraphBar);
+        google.charts.setOnLoadCallback(selfTimeGraphCurve);
+        function drawScatter(){
+            var data = google.visualization.arrayToDataTable([
+                [ 'Execution Time',  'A* search' ,  'Bellman-Ford' ,  'Floyd-Warshall'],
+                {% for x in range (0, l) %}
+                    [ {{t[x]}},{{e[x]}},{{e1[x]}},{{e2[x]}}],
+                {% endfor %}
+            ]);
+            
+            var options = {
+            title: 'Execution time vs. No. of edges',
+            hAxis: {title: 'Execution time (in ms)', minValue: 300, maxValue: 1500},
+            vAxis: {title: 'No. of edges', minValue: 0, maxValue: 20},
+            height: 500,
+            legend: 'true'
+            };
+
+            var scatterChart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+            scatterChart.draw(data, options);
+        }
+
+        function curveLinesGraph() {
+            var data = google.visualization.arrayToDataTable([
+                [ 'Execution Time',  'A* search' ,  'Bellman-Ford' ,  'Floyd-Warshall'],
+                {% for x in range (0, l) %}
+                    [ {{t[x]}},{{e[x]}},{{e1[x]}},{{e2[x]}}],
+                {% endfor %}
+            ]);
+
+            var options = {
+            title: 'Execution time vs. No. of edges',
+            curveType: 'function',
+            hAxis: {title: 'Execution time (in ms)', minValue: 300, maxValue: 1500},
+            vAxis: {title: 'No. of edges', minValue: 0, maxValue: 20},
+            height: 500,
+            legend: 'true'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+        
+        function selfTimeGraphCurve() {
+            var data = google.visualization.arrayToDataTable([
+                [ 'Execution Time',  'A* search' ,  'Bellman-Ford' ,  'Floyd-Warshall'],
+                [ 0, 0, 0, 0],
+                {% for x in range (0, 20) %}
+                    [ {{x+1}},{{aStarSelfTime[x]}},{{bellmanFordSelfTime[x]}},{{floydSelfTime[x]}}],
+                {% endfor %}
+            ]);
+
+            var options = {
+            title: 'Test case number vs Execution time',
+            curveType: 'function',
+            hAxis: {title: 'Test case number', minValue: 0, maxValue: 22},
+            vAxis: {title: 'Execution time ', minValue: 0, maxValue: 2200},
+            height: 500,
+            legend: 'true'
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('selfTimeGraphCurve'));
+
+            chart.draw(data, options);
+        }
+
+        function selfTimeGraphBar() {
+            var data = google.visualization.arrayToDataTable([
+                [ 'Test case number',  'A* search' ,  'Bellman-Ford' ,  'Floyd-Warshall'],
+                {% for x in range (0, 20) %}
+                    [ {{x+1}},{{aStarSelfTime[x]}},{{bellmanFordSelfTime[x]}},{{floydSelfTime[x]}}],
+                {% endfor %}
+            ]);
+            
+            var options = {
+            chart: {
+                title: 'Test case number vs Execution time',
+                subtitle: 'Time taken by each algorithm for each test case grouped',
+            },
+            bars: 'vertical', // Required for Material Bar Charts.
+            hAxis: {title: 'Test case number'},
+            vAxis: {title: 'Execution time '},
+            height:600
+            };
+
+            var chart = new google.charts.Bar(document.getElementById('selfTimeGraphBar'));
+
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+        
+    </script>
+    </head>
+    <script>
+
+        function set_n()
+        {
+            document.getElementById("A").value="Astar";
+        }
+            function set_n1()
+        {
+            document.getElementById("B").value="Bellman";
+        }
+            function set_n2()
+        {
+            document.getElementById("F").value="Floyed";
+        }
+    </script>
+    <body>
+        <center><h1><u>Finding the shortest distance between two points in a graph</u></h1></center>
+
+        <button id = 'showForm' class ="algoButton" onclick="set_n()">Click here to test with custom inputs for A*</button>
+        <button id = 'showForm1' class ="algoButton" onclick="set_n1()">Click here to test with custom inputs for Bellman</button>
+        <button id = 'showForm2' class ="algoButton" onclick="set_n2()">Click here to test with custom inputs for Floyd</button>
+
+        <div class = 'formInput' hidden>
+            <form action="/mainPageFormValidation" method="get">
+                <input type="hidden" name="algo_n" id="A">
+                <h2>Enter inputs</h2>
+                <p>
+                    <label for="n_r">Number of rows</label>
+                    <input type="text" name="n_r">
+                </p>
+                <p>
+                    <label for="heuristics">Heuristics of each node</label>
+                    <textarea type="text" name="heuristics"></textarea>
+                </p>
+                <p>
+                    <label for="adjMat">Adjacent matrix</label>
+                    <textarea type="text" name="adjMat" rows="10" cols="10">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</textarea>
+                </p>
+                <p>
+                    <label for="source">Source</label>
+                    <input type="text" name="source">
+                </p>
+                <p>
+                    <label for="destination">Destination</label>
+                    <input type="text" name="destination">
+                </p>
+                <p>
+                    <input type="submit" class = "submitButton">
+                </p>
+            </form>
+        </div>
+
+        <div class = 'formInput1' hidden>
+            <form action="/mainPageFormValidation" method="get">
+                <input type="hidden" name="algo_n" id="B">
+                <h2>Enter inputs</h2>
+                <p>
+                    <label for="n_r">Number of rows/vertices</label>
+                    <input type="text" name="n_r">
+                </p>
+                <p>   <label for="n_n">Number of edges</label>
+                    <input type="text" name="n_n">
+
+                </p>
+                    <p>
+                    <label for="adjMat">Each node info</label>
+                    <textarea type="text" name="adjMat" rows="10" cols="10">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</textarea>
+                </p>
+                <p>
+                    <label for="source">Source</label>
+                    <input type="text" name="source">
+                </p>
+
+                <p>
+                    <input type="submit" class = "submitButton">
+                </p>
+            </form>
+        </div>
+
+        <div class = 'formInput2' hidden>
+            <form action="/mainPageFormValidation" method="get">
+                <input type="hidden" name="algo_n" id="F">
+                <h2>Enter inputs</h2>
+                <p>
+                    <label for="n_r">Number of rows/vertices</label>
+                    <input type="text" name="n_r">
+                </p>
+                <p>   <label for="n_n">Number of Edges</label>
+                    <input type="text" name="n_n">
+
+                </p>
+                    <p>
+                    <label for="adjMat">Adjacent matrix</label>
+                    <textarea type="text" name="adjMat" rows="10" cols="10">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</textarea>
+                </p>
+
+                <p>
+                    <input type="submit" class = "submitButton">
+                </p>
+            </form>
+        </div>
+
+        <div class = "graphs">
+            <center><h2>Analysing algorithm by plotting graph of no. of edges vs execution time</h2>
+            <div id = "linechart_material" class = "subGraphDiv"></div>
+
+            <div id = "chart_div" class = "subGraphDiv"></div>
+
+            <div id = "curve_chart" class = "subGraphDiv"></div></center>
+            
+            <div id = "selfTimeGraphCurve" class = "subGraphDiv"></div></center>
+            
+            <div id = "selfTimeGraphBar" class = "subGraphDiv"></div></center>
+        </div>
+        
+        <center><div class = "percentageAnalysis">
+            <table>
+                <thead id = "thead">Percentage correctness of following algorithms
+                    <tr>
+                        <th>A* search</th>
+                        <th>Bellman- Ford</th>
+                        <th>Floyd- Warshall</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            100.00
+                        </td>
+                        <td>
+                            90.00
+                        </td>
+                        <td>
+                            95.00
+                        </td>
+                    </tr>
+                </tbody>
+            </table><br>
+        </div></center>
+    </body>
+
+  <script>
+    $('document').ready(function(){
+      $('#showForm').click(function(){
+        $('.formInput').toggle();
+      });
+    });
+        $('document').ready(function(){
+      $('#showForm1').click(function(){
+        $('.formInput1').toggle();
+      });
+    });
+        $('document').ready(function(){
+      $('#showForm2').click(function(){
+        $('.formInput2').toggle();
+      });
+    });
+  </script>
+</html>

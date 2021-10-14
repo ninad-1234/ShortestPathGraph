@@ -1,0 +1,37 @@
+create database dsa_project;
+use dsa_project;
+
+create table output_info( 
+    testID int AUTO_INCREMENT PRIMARY KEY, 
+    noOfVertices int, 
+    noOfPaths int, 
+    executionTime double 
+);
+
+create table output_info1( 
+    testID1 int AUTO_INCREMENT PRIMARY KEY, 
+    noOfVertices1 int, 
+    noOfPaths1 int, 
+    executionTime1 double 
+);
+
+create table output_info2( 
+    testID2 int AUTO_INCREMENT PRIMARY KEY, 
+    noOfVertices2 int, 
+    noOfPaths2 int, 
+    executionTime2 double 
+);
+
+create table selfTime (
+    test_id int AUTO_INCREMENT primary key,
+    aStar int,
+    bellman int,
+    floyd int
+);
+
+create table correctNess(
+    test_id int AUTO_INCREMENT primary key,
+    aStar boolean,
+    bellman boolean,
+    floyd boolean
+);

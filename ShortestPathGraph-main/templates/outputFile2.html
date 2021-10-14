@@ -1,0 +1,73 @@
+
+
+
+
+<html>
+  <head>
+    <title>Output of Floyd algorithm</title>
+    <style>
+      .formResponse{
+        border: 1px solid black ;
+        margin: 5%;
+        padding: 2%;
+      }
+      .goBackDiv{
+        width: 10%;
+      }
+
+      #goBackButton{
+        padding: 0.5%;
+        width: 10%;
+        margin-left: 90%;
+        background-color: black;
+        color: white;
+        font-weight: bold;
+      }
+      
+      #goBackButton:hover{
+        background-color: #474747;
+      }
+
+      #outputHeading{
+        font-size: 35px;
+      }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+      $('document').ready(function(){
+        $('#goBackButton').click( function(){
+          window.history.back();
+        });
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id = "goBackDiv">
+      <center><p id = "outputHeading"><b>Output</b><button id = "goBackButton">Go back</button></center></p>
+    </div>
+    <div class = "formResponse">
+      <h2><u>You have entered the following</u></h2>
+
+      <h3>Number of Vertices</h3>
+      {{n}}
+
+      <h3>Number of edges</h3>
+      {{e}}
+
+      <h3>Adjacency Matrix</h3>
+      {{g}}
+
+
+
+
+      <h2><u>Output</u></h2>
+
+      <h3>Shortest Path from each node to everyother node</h3>
+      {{d}}
+
+
+    </div>
+  </body>
+</html>
